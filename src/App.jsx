@@ -102,7 +102,8 @@ function MultiSelect({ options, placeholder }) {
           backgroundSize: '16px',
           color: selected.length === 0 ? '#94a3b8' : 'var(--text-main)',
           fontSize: '0.9rem',
-          padding: '8px'
+          padding: '10px 8px',
+          lineHeight: '1.4'
         }}
         title={displayText}
       >
@@ -488,7 +489,15 @@ function App() {
                 onClick={() => {
                   const el = document.getElementById('homework-capture');
                   if (el) {
-                    html2canvas(el, { backgroundColor: '#fdfbf7', scale: 2 }).then(canvas => {
+                    html2canvas(el, { 
+                      backgroundColor: '#fdfbf7', 
+                      scale: 2,
+                      onclone: (clonedDoc) => {
+                        // Ẩn mũi tên của mục Bài số (MultiSelect) và các dropdown khác khi xuất ảnh
+                        const controls = clonedDoc.querySelectorAll('.multi-select-container .form-control, select.form-control');
+                        controls.forEach(c => c.style.backgroundImage = 'none');
+                      }
+                    }).then(canvas => {
                       const link = document.createElement('a');
                       link.download = `Bao_bai_tap_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.png`;
                       link.href = canvas.toDataURL('image/png');
