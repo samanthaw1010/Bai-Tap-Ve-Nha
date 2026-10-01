@@ -3,14 +3,14 @@ import html2canvas from 'html2canvas';
 import './index.css';
 
 const DEFAULT_SUBJECTS_CONFIG = [
-  { id: '1', name: "Toán", notebooks: ["Sách Toán", "Vở bài tập Toán", "Vở đỏ"] },
-  { id: '2', name: "Tiếng Việt", notebooks: ["Sách Tiếng Việt", "Vở bài tập Tiếng Việt", "Vở vàng"] },
-  { id: '3', name: "Mĩ thuật", notebooks: ["Sách Mĩ thuật", "Vở bài tập Mĩ thuật"] },
+  { id: '1', name: "Toán", notebooks: ["Sách Toán", "VBT Toán", "Vở đỏ"] },
+  { id: '2', name: "Tiếng Việt", notebooks: ["Sách Tiếng Việt", "VBT Tiếng Việt", "Vở Tập Viết", "Vở vàng"] },
+  { id: '3', name: "Mĩ thuật", notebooks: ["Sách Mĩ thuật", "VBT Mĩ thuật"] },
   { id: '4', name: "Tiếng Anh", notebooks: ["Student Book", "Workbook"] },
   { id: '5', name: "Tin học", notebooks: ["Sách Tin học"] },
-  { id: '6', name: "Tự nhiên và Xã hội", notebooks: ["Sách giáo khoa", "Vở bài tập", "Vở ghi"] },
-  { id: '7', name: "Đạo đức", notebooks: ["Sách giáo khoa", "Vở bài tập", "Vở ghi"] },
-  { id: '8', name: "Hoạt động trải nghiệm", notebooks: ["Sách giáo khoa", "Vở bài tập", "Vở ghi"] },
+  { id: '6', name: "Tự nhiên và Xã hội", notebooks: ["Sách giáo khoa", "VBT", "Vở ghi"] },
+  { id: '7', name: "Đạo đức", notebooks: ["Sách giáo khoa", "VBT", "Vở ghi"] },
+  { id: '8', name: "Hoạt động trải nghiệm", notebooks: ["Sách giáo khoa", "VBT", "Vở ghi"] },
   { id: '9', name: "Thể dục", notebooks: ["Sách giáo khoa"] }
 ];
 
@@ -132,7 +132,7 @@ function MultiSelect({ options, placeholder }) {
 
 function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableSubjects, currentSubjects }) {
   const subjectConfig = availableSubjects.find(s => s.name === subject);
-  const notebooks = subjectConfig ? subjectConfig.notebooks : ["Sách giáo khoa", "Vở bài tập", "Vở ghi"];
+  const notebooks = subjectConfig ? subjectConfig.notebooks : ["Sách giáo khoa", "VBT", "Vở ghi"];
 
   const [rows, setRows] = useState([{ id: Date.now() }]);
   const [otherRows, setOtherRows] = useState([{ id: Date.now(), type: "" }]);
@@ -307,7 +307,7 @@ function SettingsTab({ availableSubjects, setAvailableSubjects }) {
   const addSubject = () => {
     const name = prompt("Nhập tên môn học mới:");
     if (name) {
-      setAvailableSubjects([...availableSubjects, { id: Date.now().toString(), name, notebooks: ["Sách giáo khoa", "Vở bài tập"] }]);
+      setAvailableSubjects([...availableSubjects, { id: Date.now().toString(), name, notebooks: ["Sách giáo khoa", "VBT"] }]);
     }
   };
 
@@ -410,7 +410,23 @@ function App() {
   const [availableSubjects, setAvailableSubjects] = useState(() => {
     const saved = localStorage.getItem('homework_app_subjects');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { console.error(e); }
+      try { 
+        let parsed = JSON.parse(saved);
+        // Tự động cập nhật chữ "Vở bài tập" thành "VBT" và thêm "Vở Tập Viết" cho Tiếng Việt
+        parsed = parsed.map(s => {
+          let newNotebooks = s.notebooks.map(nb => nb.replace(/Vở bài tập/g, "VBT"));
+          if (s.name === "Tiếng Việt" && !newNotebooks.includes("Vở Tập Viết")) {
+            const yellowIdx = newNotebooks.indexOf("Vở vàng");
+            if (yellowIdx > -1) {
+              newNotebooks.splice(yellowIdx, 0, "Vở Tập Viết");
+            } else {
+              newNotebooks.push("Vở Tập Viết");
+            }
+          }
+          return { ...s, notebooks: newNotebooks };
+        });
+        return parsed;
+      } catch (e) { console.error(e); }
     }
     return DEFAULT_SUBJECTS_CONFIG;
   });
@@ -475,6 +491,11 @@ function App() {
                   currentSubjects={subjects.map(s => s.name)}
                 />
               ))}
+
+              <div style={{ marginTop: '12px', fontStyle: 'italic', fontSize: '0.9rem', color: '#64748b', padding: '0 8px', fontWeight: 600 }}>
+                *Từ ngữ viết tắt:<br/>
+                VBT: Vở Bài Tập
+              </div>
 
               <div className="add-btn-container" data-html2canvas-ignore="true">
                 <button 

@@ -2,7 +2,8 @@
 
 :root {
   --bg-cream: #fdfbf7;
-  --bg-settings: #e0f2fe; /* Light blue */
+  --bg-settings: #e0f2fe;
+  /* Light blue */
   --text-main: #333333;
   --primary-red: #e63946;
   --primary-blue: #1d3557;
@@ -29,7 +30,8 @@ body {
 
 #root {
   width: 100%;
-  max-width: 600px; /* Mobile first, max-width for desktop */
+  max-width: 600px;
+  /* Mobile first, max-width for desktop */
   background-color: var(--white);
   min-height: 100vh;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -81,8 +83,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Header */
@@ -101,7 +110,7 @@ body {
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid #e2e8f0;
 }
 
@@ -162,14 +171,16 @@ select.form-control {
 
 .form-control.notebook-select {
   font-weight: 700;
-  color: #003366; /* Dark blue as requested */
+  color: #003366;
+  /* Dark blue as requested */
 }
+
 .form-control.notebook-select option {
   text-transform: capitalize;
 }
 
 /* Number input arrows */
-input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   opacity: 1;
   height: 30px;
@@ -285,6 +296,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0 16px 30px;
   max-width: 100%;
 }
+
 .btn-primary {
   width: 100%;
   padding: 12px;
@@ -299,20 +311,24 @@ input[type=number]::-webkit-outer-spin-button {
   font-family: inherit;
   transition: background-color 0.2s;
 }
+
 .btn-primary:hover {
   background-color: #2a4b7c;
 }
+
 .settings-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
 .settings-item {
   background: var(--white);
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
+
 .settings-item-header {
   display: flex;
   justify-content: space-between;
@@ -324,13 +340,16 @@ input[type=number]::-webkit-outer-spin-button {
   color: var(--primary-blue);
   border-radius: 8px;
 }
+
 .settings-item-header:hover {
   background: #f8fafc;
 }
+
 .settings-item-title {
   flex: 1;
   font-size: 1.1rem;
 }
+
 .icon-btn {
   background: none;
   border: none;
@@ -339,8 +358,17 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 4px 8px;
   margin-left: 4px;
 }
-.edit-btn:hover { color: var(--primary-blue); transform: scale(1.1); }
-.delete-btn:hover { color: var(--primary-red); transform: scale(1.1); }
+
+.edit-btn:hover {
+  color: var(--primary-blue);
+  transform: scale(1.1);
+}
+
+.delete-btn:hover {
+  color: var(--primary-red);
+  transform: scale(1.1);
+}
+
 .expand-icon {
   margin-left: 12px;
   font-size: 0.8rem;
@@ -349,22 +377,26 @@ input[type=number]::-webkit-outer-spin-button {
   width: 16px;
   text-align: center;
 }
+
 .settings-sublist {
   background: #f8fafc;
   padding: 16px;
   border-top: 1px solid var(--border-color);
   border-radius: 0 0 8px 8px;
 }
+
 .sublist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
+
 .sublist-header h4 {
   color: #475569;
   font-size: 0.95rem;
 }
+
 .btn-small {
   padding: 6px 12px;
   background: var(--white);
@@ -375,10 +407,12 @@ input[type=number]::-webkit-outer-spin-button {
   font-weight: 600;
   color: var(--primary-blue);
 }
+
 .btn-small:hover {
   background: var(--primary-blue);
   color: white;
 }
+
 .sublist-item {
   display: flex;
   justify-content: space-between;
@@ -391,6 +425,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 0.95rem;
   color: var(--text-main);
 }
+
 .empty-text {
   color: #64748b;
   font-style: italic;
@@ -403,21 +438,28 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
   display: inline-block;
 }
+
 .kebab-btn {
   font-size: 1.4rem;
   font-weight: bold;
   padding: 0 8px;
   color: #64748b;
 }
+
 .kebab-btn:hover {
   color: var(--primary-blue);
   transform: scale(1.1);
 }
+
 .kebab-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 99;
 }
+
 .kebab-dropdown {
   position: absolute;
   top: 100%;
@@ -425,13 +467,14 @@ input[type=number]::-webkit-outer-spin-button {
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 160px;
   z-index: 100;
   overflow: hidden;
   padding: 4px 0;
   text-align: left;
 }
+
 .kebab-item {
   padding: 12px 16px;
   font-size: 0.95rem;
@@ -440,9 +483,11 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 0.2s;
   font-weight: 600;
 }
+
 .kebab-item:hover {
   background-color: #f1f5f9;
 }
+
 .kebab-item.danger {
   color: var(--primary-red);
 }
@@ -454,24 +499,30 @@ input[type=number]::-webkit-outer-spin-button {
   margin-bottom: 12px;
   align-items: center;
 }
+
 .task-row .form-control {
-  padding: 10px 8px; 
+  padding: 10px 8px;
   font-size: 0.9rem;
   line-height: 1.4;
 }
+
 .task-row .notebook-select {
   flex: 1.8;
   background-position: right 4px center;
   padding-right: 20px;
 }
-.task-row input, .task-row select {
+
+.task-row input,
+.task-row select {
   flex: 1;
 }
+
 .add-row-container {
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
 }
+
 .round-btn {
   width: 32px;
   height: 32px;
@@ -489,10 +540,12 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0;
   transition: all 0.2s;
 }
+
 .round-btn:hover {
   background-color: var(--primary-blue);
   color: white;
 }
+
 .other-task-group {
   margin-top: 16px;
   padding-top: 16px;
@@ -503,6 +556,7 @@ input[type=number]::-webkit-outer-spin-button {
 .multi-select-container {
   min-width: 60px;
 }
+
 .multi-select-dropdown {
   position: absolute;
   top: 100%;
@@ -514,11 +568,12 @@ input[type=number]::-webkit-outer-spin-button {
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 100;
   padding: 4px 0;
   margin-top: 4px;
 }
+
 .multi-select-item {
   display: flex;
   align-items: center;
@@ -529,9 +584,11 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 0.2s;
   gap: 8px;
 }
+
 .multi-select-item:hover {
   background-color: #f1f5f9;
 }
+
 .multi-select-item input {
   cursor: pointer;
   width: 16px;
