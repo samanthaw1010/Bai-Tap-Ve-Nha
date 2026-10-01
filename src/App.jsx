@@ -253,6 +253,7 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
                   className="form-control" 
                   value={row.type} 
                   onChange={(e) => updateOtherRowType(row.id, e.target.value)}
+                  style={{ flex: 2 }}
                 >
                   <option value="">-- Chọn --</option>
                   {otherOptions.map(opt => (
@@ -269,12 +270,16 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
             </div>
             
             <div style={{ display: 'flex', gap: '6px' }}>
-              <input 
-                type="text" 
+              <textarea 
                 className="form-control" 
                 placeholder="Nhập yêu cầu bài tập..." 
-                style={{ flex: 1 }}
-              />
+                rows="1"
+                style={{ flex: 1, resize: 'none', overflow: 'hidden' }}
+                onInput={(e) => {
+                  e.target.style.height = 'auto';
+                  e.target.style.height = (e.target.scrollHeight + 4) + 'px';
+                }}
+              ></textarea>
               {otherRows.length > 1 && <div style={{ width: '28px' }}></div>}
             </div>
           </div>
