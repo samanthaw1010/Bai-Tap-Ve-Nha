@@ -39,8 +39,8 @@ function KebabMenu({ options }) {
 
   return (
     <div className="kebab-container" onClick={(e) => e.stopPropagation()}>
-      <button 
-        className="icon-btn kebab-btn" 
+      <button
+        className="icon-btn kebab-btn"
         onClick={() => setIsOpen(!isOpen)}
         title="Tùy chọn"
       >
@@ -51,9 +51,9 @@ function KebabMenu({ options }) {
           <div className="kebab-overlay" onClick={() => setIsOpen(false)}></div>
           <div className="kebab-dropdown">
             {options.map((opt, i) => (
-              <div 
-                key={i} 
-                className={`kebab-item ${opt.danger ? 'danger' : ''}`} 
+              <div
+                key={i}
+                className={`kebab-item ${opt.danger ? 'danger' : ''}`}
                 onClick={() => {
                   setIsOpen(false);
                   opt.onClick();
@@ -87,13 +87,13 @@ function MultiSelect({ options, placeholder }) {
 
   return (
     <div className="multi-select-container" style={{ position: 'relative', flex: 1 }}>
-      <div 
-        className="form-control" 
+      <div
+        className="form-control"
         onClick={() => setIsOpen(!isOpen)}
-        style={{ 
-          cursor: 'pointer', 
-          whiteSpace: 'nowrap', 
-          overflow: 'hidden', 
+        style={{
+          cursor: 'pointer',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
           textOverflow: 'ellipsis',
           paddingRight: '20px',
           backgroundPosition: 'right 4px center',
@@ -115,10 +115,10 @@ function MultiSelect({ options, placeholder }) {
           <div className="multi-select-dropdown" data-html2canvas-ignore="true">
             {options.map(opt => (
               <label key={opt} className="multi-select-item">
-                <input 
-                  type="checkbox" 
-                  checked={selected.includes(opt)} 
-                  onChange={() => toggleOption(opt)} 
+                <input
+                  type="checkbox"
+                  checked={selected.includes(opt)}
+                  onChange={() => toggleOption(opt)}
                 />
                 Bài {opt}
               </label>
@@ -174,9 +174,9 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
         {isDefault ? (
           <h2 className="subject-title">{subject}</h2>
         ) : (
-          <select 
-            className="subject-title-select" 
-            value={subject || ""} 
+          <select
+            className="subject-title-select"
+            value={subject || ""}
             onChange={(e) => {
               onSubjectChange && onSubjectChange(e.target.value);
               setRows([{ id: Date.now() }]);
@@ -187,8 +187,8 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
             {availableSubjects
               .filter(subj => subj.name === subject || !currentSubjects.includes(subj.name))
               .map(subj => (
-              <option key={subj.id} value={subj.name}>{subj.name}</option>
-            ))}
+                <option key={subj.id} value={subj.name}>{subj.name}</option>
+              ))}
           </select>
         )}
       </div>
@@ -208,15 +208,15 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
               ))}
             </select>
 
-            <MultiSelect 
-              options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} 
-              placeholder="Bài..." 
+            <MultiSelect
+              options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+              placeholder="Bài..."
             />
 
-            <input 
-              type="number" 
-              className="form-control" 
-              placeholder="Trang" 
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Trang"
               min="1"
             />
 
@@ -237,7 +237,7 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
 
       <div className="form-group other-task-group">
         <label>Bài tập khác:</label>
-        
+
         {otherRows.map((row) => (
           <div key={row.id} style={{ marginBottom: '12px' }}>
             <div className="task-row" style={{ marginBottom: '8px' }}>
@@ -249,9 +249,9 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
               </select>
 
               {otherOptions.length > 0 && (
-                <select 
-                  className="form-control" 
-                  value={row.type} 
+                <select
+                  className="form-control"
+                  value={row.type}
                   onChange={(e) => updateOtherRowType(row.id, e.target.value)}
                   style={{ flex: 2 }}
                 >
@@ -261,18 +261,18 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
                   ))}
                 </select>
               )}
-              
+
               {otherRows.length > 1 && (
                 <button className="icon-btn delete-btn" style={{ padding: '4px' }} data-html2canvas-ignore="true" onClick={() => removeOtherRow(row.id)}>
                   ✖
                 </button>
               )}
             </div>
-            
+
             <div style={{ display: 'flex', gap: '6px' }}>
-              <textarea 
-                className="form-control" 
-                placeholder="Nhập yêu cầu bài tập..." 
+              <textarea
+                className="form-control"
+                placeholder="Nhập yêu cầu bài tập..."
                 rows="1"
                 style={{ flex: 1, resize: 'none', overflow: 'hidden' }}
                 onInput={(e) => {
@@ -303,7 +303,7 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
 
 function SettingsTab({ availableSubjects, setAvailableSubjects }) {
   const [expandedId, setExpandedId] = useState(null);
-  
+
   const addSubject = () => {
     const name = prompt("Nhập tên môn học mới:");
     if (name) {
@@ -364,7 +364,7 @@ function SettingsTab({ availableSubjects, setAvailableSubjects }) {
     <div className="settings-container">
       <h2 className="page-title" style={{ marginTop: '20px' }}>Quản lý Môn Học & Vở</h2>
       <button className="btn-primary" onClick={addSubject}>+ Thêm môn học</button>
-      
+
       <div className="settings-list">
         {availableSubjects.map(subj => (
           <div key={subj.id} className="settings-item">
@@ -380,7 +380,7 @@ function SettingsTab({ availableSubjects, setAvailableSubjects }) {
                 ]} />
               </div>
             </div>
-            
+
             {expandedId === subj.id && (
               <div className="settings-sublist">
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -406,11 +406,11 @@ function SettingsTab({ availableSubjects, setAvailableSubjects }) {
 
 function App() {
   const [activeTab, setActiveTab] = useState('homework');
-  
+
   const [availableSubjects, setAvailableSubjects] = useState(() => {
     const saved = localStorage.getItem('homework_app_subjects');
     if (saved) {
-      try { 
+      try {
         let parsed = JSON.parse(saved);
         // Tự động cập nhật chữ "Vở bài tập" thành "VBT" và thêm "Vở Tập Viết" cho Tiếng Việt
         parsed = parsed.map(s => {
@@ -458,13 +458,13 @@ function App() {
   return (
     <div className={containerClass} style={{ minHeight: '100vh', transition: 'background-color 0.3s ease' }}>
       <div className="tabs">
-        <button 
+        <button
           className={`tab-btn ${isHomeworkTab ? 'active' : ''}`}
           onClick={() => setActiveTab('homework')}
         >
           Báo bài tập
         </button>
-        <button 
+        <button
           className={`tab-btn ${!isHomeworkTab ? 'active' : ''}`}
           onClick={() => setActiveTab('settings')}
         >
@@ -477,13 +477,13 @@ function App() {
           <div style={{ position: 'relative' }}>
             <div id="homework-capture" style={{ padding: '16px', margin: '-16px', backgroundColor: 'var(--bg-cream)' }}>
               <h1 className="page-title">
-                Bài tập về nhà<br/>{getVietnameseDate()}
+                Bài tập về nhà<br />{getVietnameseDate()}
               </h1>
 
               {subjects.map((subject) => (
-                <SubjectCard 
-                  key={subject.id} 
-                  subject={subject.name} 
+                <SubjectCard
+                  key={subject.id}
+                  subject={subject.name}
                   isDefault={subject.isDefault}
                   onRemove={() => removeSubject(subject.id)}
                   onSubjectChange={(newName) => updateSubjectName(subject.id, newName)}
@@ -493,12 +493,11 @@ function App() {
               ))}
 
               <div style={{ marginTop: '12px', fontStyle: 'italic', fontSize: '0.9rem', color: '#64748b', padding: '0 8px', fontWeight: 600 }}>
-                *Từ ngữ viết tắt:<br/>
-                VBT: Vở Bài Tập
+                *Từ ngữ viết tắt: VBT: Vở Bài Tập
               </div>
 
               <div className="add-btn-container" data-html2canvas-ignore="true">
-                <button 
+                <button
                   className="btn-round"
                   onClick={handleAddSubject}
                   title="Thêm môn học khác"
@@ -509,14 +508,14 @@ function App() {
             </div>
 
             <div data-html2canvas-ignore="true" style={{ marginTop: '30px', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-              <button 
-                className="btn-primary" 
+              <button
+                className="btn-primary"
                 style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', maxWidth: '80%' }}
                 onClick={() => {
                   const el = document.getElementById('homework-capture');
                   if (el) {
-                    html2canvas(el, { 
-                      backgroundColor: '#fdfbf7', 
+                    html2canvas(el, {
+                      backgroundColor: '#fdfbf7',
                       scale: 2,
                       onclone: (clonedDoc) => {
                         // Ẩn mũi tên của mục Bài số (MultiSelect) và các dropdown khác khi xuất ảnh
@@ -537,9 +536,9 @@ function App() {
             </div>
           </div>
         ) : (
-          <SettingsTab 
-            availableSubjects={availableSubjects} 
-            setAvailableSubjects={setAvailableSubjects} 
+          <SettingsTab
+            availableSubjects={availableSubjects}
+            setAvailableSubjects={setAvailableSubjects}
           />
         )}
       </div>
