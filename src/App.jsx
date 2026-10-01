@@ -174,22 +174,28 @@ function SubjectCard({ subject, onRemove, isDefault, onSubjectChange, availableS
         {isDefault ? (
           <h2 className="subject-title">{subject}</h2>
         ) : (
-          <select
-            className="subject-title-select"
-            value={subject || ""}
-            onChange={(e) => {
-              onSubjectChange && onSubjectChange(e.target.value);
-              setRows([{ id: Date.now() }]);
-              setOtherRows([{ id: Date.now(), type: "" }]);
-            }}
-          >
-            <option value="" disabled>-- Chọn môn học --</option>
-            {availableSubjects
-              .filter(subj => subj.name === subject || !currentSubjects.includes(subj.name))
-              .map(subj => (
-                <option key={subj.id} value={subj.name}>{subj.name}</option>
-              ))}
-          </select>
+          <div style={{ position: 'relative' }}>
+            <h2 className="subject-title" style={{ margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+              {subject || "-- CHỌN MÔN --"}
+              <svg data-html2canvas-ignore="true" xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='var(--primary-red)' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>
+            </h2>
+            <select 
+              value={subject || ""} 
+              onChange={(e) => {
+                onSubjectChange && onSubjectChange(e.target.value);
+                setRows([{ id: Date.now() }]);
+                setOtherRows([{ id: Date.now(), type: "" }]);
+              }}
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' }}
+            >
+              <option value="" disabled>-- Chọn môn học --</option>
+              {availableSubjects
+                .filter(subj => subj.name === subject || !currentSubjects.includes(subj.name))
+                .map(subj => (
+                  <option key={subj.id} value={subj.name}>{subj.name}</option>
+                ))}
+            </select>
+          </div>
         )}
       </div>
 
@@ -406,6 +412,8 @@ function SettingsTab({ availableSubjects, setAvailableSubjects }) {
 
 function App() {
   const [activeTab, setActiveTab] = useState('homework');
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const [availableSubjects, setAvailableSubjects] = useState(() => {
     const saved = localStorage.getItem('homework_app_subjects');
@@ -510,30 +518,83 @@ function App() {
             <div data-html2canvas-ignore="true" style={{ marginTop: '30px', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
               <button
                 className="btn-primary"
-                style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', maxWidth: '80%' }}
+                style={{ backgroundColor: isGenerating ? '#64748b' : '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', maxWidth: '80%' }}
+                disabled={isGenerating}
                 onClick={() => {
                   const el = document.getElementById('homework-capture');
                   if (el) {
+                    setIsGenerating(true);
                     html2canvas(el, {
                       backgroundColor: '#fdfbf7',
                       scale: 2,
                       onclone: (clonedDoc) => {
-                        // Ẩn mũi tên của mục Bài số (MultiSelect) và các dropdown khác khi xuất ảnh
                         const controls = clonedDoc.querySelectorAll('.multi-select-container .form-control, select.form-control');
                         controls.forEach(c => c.style.backgroundImage = 'none');
                       }
                     }).then(canvas => {
-                      const link = document.createElement('a');
-                      link.download = `Bao_bai_tap_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.png`;
-                      link.href = canvas.toDataURL('image/png');
-                      link.click();
+                      canvas.toBlob((blob) => {
+                        if (blob) {
+                          const url = URL.createObjectURL(blob);
+                          setPreviewImage({ url, blob });
+                        }
+                        setIsGenerating(false);
+                      }, 'image/png');
+                    }).catch(err => {
+                      console.error(err);
+                      setIsGenerating(false);
                     });
                   }
                 }}
               >
-                <span style={{ fontSize: '1.4rem' }}>📸</span> Xuất ảnh gửi Zalo
+                <span style={{ fontSize: '1.4rem' }}>{isGenerating ? '⏳' : '📸'}</span> 
+                {isGenerating ? 'Đang tạo ảnh...' : 'Xuất ảnh gửi Zalo'}
               </button>
             </div>
+
+            {/* Modal hiển thị ảnh trước khi tải để tương thích iOS PWA */}
+            {previewImage && (
+              <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+                <h3 style={{ color: 'white', margin: '0 0 16px 0', fontSize: '1.2rem' }}>Ảnh đã sẵn sàng!</h3>
+                <div style={{ flex: 1, overflow: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                  <img src={previewImage.url} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: '8px', objectFit: 'contain' }} alt="Báo bài tập" />
+                </div>
+                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginTop: '16px', textAlign: 'center', lineHeight: 1.5 }}>
+                  💡 <b style={{color: 'white'}}>Mẹo cho iPhone:</b> Nhấn giữ ảnh bên trên để lưu/copy<br/>nếu nút Chia sẻ bên dưới không hoạt động.
+                </p>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '20px', width: '100%', maxWidth: '340px' }}>
+                  <button 
+                    className="btn-primary" 
+                    style={{ flex: 1, backgroundColor: '#10b981', margin: 0, padding: '14px' }}
+                    onClick={() => {
+                      const file = new File([previewImage.blob], `Bao_bai_tap_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.png`, { type: 'image/png' });
+                      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                          files: [file],
+                          title: 'Báo bài tập'
+                        }).catch(console.error);
+                      } else {
+                         const link = document.createElement('a');
+                         link.download = file.name;
+                         link.href = previewImage.url;
+                         link.click();
+                      }
+                    }}
+                  >
+                    🚀 Chia sẻ ngay
+                  </button>
+                  <button 
+                    className="btn-primary" 
+                    style={{ flex: 1, backgroundColor: '#475569', margin: 0, padding: '14px' }}
+                    onClick={() => {
+                      URL.revokeObjectURL(previewImage.url);
+                      setPreviewImage(null);
+                    }}
+                  >
+                    Đóng
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <SettingsTab
